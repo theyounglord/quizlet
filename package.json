@@ -1,0 +1,22 @@
+{
+  "name": "quizlet",
+  "version": "1.0.0",
+  "description": "Quiz System",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theyounglord/quizlet.git"
+  },
+  "author": "Deepam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/theyounglord/quizlet/issues"
+  },
+  "homepage": "https://github.com/theyounglord/quizlet#readme",
+  "dependencies": {
+    "mongoose": "^6.3.8"
+  }
+}
