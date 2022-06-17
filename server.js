@@ -29,9 +29,19 @@ app.set('views', path.join(__dirname, 'views'));
 // // use our routes
 // app.use('/', routes);
 // start our server
+// check if MongoDB is connected
+
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
     }
 );
+// check mongoDB connection
+mongoose.connection.on('connected', () => {
+    console.log('MongoDB is connected');
+});
+// check mongoDB connection error
+mongoose.connection.on('error', (err) => {
+    console.log(err);
+});
 // export our app for testing
 module.exports = app;
