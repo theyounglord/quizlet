@@ -16,6 +16,12 @@ const adminSchema = new Schema({
         type: String,
         required: true
     },
+    role: {
+        // enum of "U" for user, "A" for admin
+        type: String,
+        enum: ["U", "A"],
+        default: "A"
+    },
     // array of ip_addresses
     ip_addresses: [{
         type: String

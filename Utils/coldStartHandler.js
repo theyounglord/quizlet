@@ -4,6 +4,7 @@ const admin = require('../Models/admin/admin');
 const errorLog = require('../Utils/errorLog');
 // require bcrypt from bcryptjs
 const bcrypt = require('bcryptjs');
+
 const coldStart = async() => {
     try {
         const adminData = await admin.findOne({ email: "kumardeepam8600@gmail.com" });
@@ -18,14 +19,20 @@ const coldStart = async() => {
             password: adminPassword
         });
         if (newAdmin) {
-            console.log("Admin Created");
-            return true;
+            return res.status(200).json({
+                message: 'Admin created successfully',
+                data: newAdmin
+            });
         }
+
     }
     catch (error) {
         console.log(error);
         errorLog(error, 'Auth', 'L');
-        return false;
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: error
+        });
     }
 };
 

@@ -1,4 +1,3 @@
-// set up server
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -46,8 +45,25 @@ mongoose
     .catch(err => {
         console.log(err);
     });
+
+// checking if one admin data is present in database, if there is no data then create one otherwise leave it
+const admin = require('./Models/admin/admin');
+const errorLog = require('./Utils/errorLog');
 const { coldStart } = require('./Utils/coldStartHandler');
-coldStart();
+admin.findOne({ email: "kumardeepam8600@gmail.com" }, (err, data) => {
+    if (err) {
+        console.log(err);
+    }
+    if (data) {
+        return;
+    }
+    else {
+        // call coldStart function to create admin data
+        coldStart();
+    }
+});
+
+// app.use("/api", require("./Api/api"));
 
 const port = process.env.PORT || 3000;
 

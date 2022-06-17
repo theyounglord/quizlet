@@ -16,6 +16,12 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    role: {
+        // enum of "U" for user, "A" for admin
+        type: String,
+        enum: ["U", "A"],
+        default: "U"
+    },
     //ip_addresses
     ip_addresses: {
         type: String,
@@ -29,6 +35,9 @@ const userSchema = new Schema({
         type: String,
         required: true
     }
+},
+{
+    timestamps: true
 });
 
 
