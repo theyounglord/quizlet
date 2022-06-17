@@ -1,4 +1,4 @@
-const errorlog = require('../Models/errorLogs/errorlog');
+const errorlog = require('../Models/errorLogs/errorLogs');
 // var Slack = require('slack-node');
 
 

@@ -18,16 +18,13 @@ const adminSchema = new Schema({
     },
     // array of ip_addresses
     ip_addresses: [{
-        type: String,
-        required: true
+        type: String
     }],
     access_token: {
-        type: String,
-        required: true
+        type: String
     },
     refresh_token: {
-        type: String,
-        required: true
+        type: String
     }
 });
 

@@ -1,47 +1,58 @@
-// require our dependencies
+// set up server
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-//dotenv is a module that loads environment variables from a .env file into process.env
-const dotenv = require('dotenv');
-dotenv.config();
-// create our express app
 const app = express();
-// set our port
-const port = process.env.PORT || 5000;
-// connect to our database
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
-// use body parser to get data from a post
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-// enable cors
-app.use(cors());
-// set our static files path
-app.use(express.static(path.join(__dirname, 'public')));
-// set the view engine to ejs
-app.set('view engine', 'ejs');
-// set the views path
-app.set('views', path.join(__dirname, 'views'));
-// require our routes
-// const routes = require('./routes');
-// // use our routes
-// app.use('/', routes);
-// start our server
-// check if MongoDB is connected
+const http = require('http');
+const server = http.createServer(app);
+const session = require('express-session');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+const bodyParser = require('body-parser');
 
-app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
-    }
+
+app.use(
+    session({
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: false
+    })
 );
-// check mongoDB connection
-mongoose.connection.on('connected', () => {
-    console.log('MongoDB is connected');
+
+require('dotenv').config();
+var corsOptions = {
+    origin: function(origin, callback) {
+        console.log(origin);
+        if(process.env.origin.indexOf(origin) !== -1) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}
+app.use(cors(process.env.origin));
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
+
+const uri = process.env.MONGODB_URI;
+mongoose
+    .connect(uri)
+    .then(() => {
+        console.log('MongoDB Connected');
+    })
+    .catch(err => {
+        console.log(err);
+    });
+const { coldStart } = require('./Utils/coldStartHandler');
+coldStart();
+
+const port = process.env.PORT || 3000;
+
+server.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
-// check mongoDB connection error
-mongoose.connection.on('error', (err) => {
-    console.log(err);
-});
-// export our app for testing
-module.exports = app;
+// // export our app for testing
+// module.exports = app;
