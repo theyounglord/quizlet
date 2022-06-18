@@ -2,37 +2,57 @@
 const User = require('../../Models/user/user');
 const errorLog = require('../../Utils/errorLog');
 const bcrypt = require('bcryptjs');
+const { create } = require('../../Models/user/user');
 
 // creating signup function for user
 const signup = async (details) => {
-    // creating a new user
     try {
-        const { name, email, password } = details;
-        const user = new User({
+        const { 
             name,
             email,
             password
-        });
-        // hashing the password
+        } = details;
+
+        // checking if user already exists
+        const user = await User.findOne({ email });
+        if (user) {
+            return {
+                status: false,
+                message: 'User already exists, please login'
+            };
+        }
+
+        // hashing password
         const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
-        // creating the user
-        const newUser = await user.create(user);
-        if (newUser) {
-            return res.status(200).json({
+        let hashedPassword = await bcrypt.hash(password, salt);
+
+        let query = {
+            name,
+            email,
+            password: hashedPassword,
+            role: 'U'
+        };
+
+        // creating user
+        const check = await User.create(query);
+        if (check) {
+            return {
+                status: true,
                 message: 'User created successfully',
-                data: newUser
-            });
+                data: check
+            };
         }
     }
     catch (error) {
         console.log(error);
         errorLog(error, 'Auth', 'L');
-        return res.status(500).json({
+        return {
+            status: false,
             message: 'Internal Server Error',
-            error: error
-        });
+            error
+        };
     }
-}
+};
+
 
 module.exports = { signup };

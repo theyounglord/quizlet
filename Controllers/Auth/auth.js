@@ -11,7 +11,7 @@ const bcrypt = require('bcryptjs');
 //only for users
 const SignUp = async (req, res) => {
     try {
-        if (req.session.user._id) {
+        if (req.session.user) {
             return res.status(200).json({
                 message: 'You are already logged in',
                 data: req.session.user

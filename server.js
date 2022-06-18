@@ -43,7 +43,7 @@ mongoose
         console.log('MongoDB Connected');
     })
     .catch(err => {
-        console.log(err);
+        console.log(err);   
     });
 
 // checking if one admin data is present in database, if there is no data then create one otherwise leave it
@@ -63,7 +63,7 @@ admin.findOne({ email: "kumardeepam8600@gmail.com" }, (err, data) => {
     }
 });
 
-// app.use("/api", require("./Api/api"));
+app.use("/api", require("./Api/api"));
 
 const port = process.env.PORT || 3000;
 
