@@ -1,4 +1,3 @@
-// require models from Models folder
 const User = require('../../Models/user/user');
 const errorLog = require('../../Utils/errorLog');
 const bcrypt = require('bcryptjs');

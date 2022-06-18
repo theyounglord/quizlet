@@ -1,8 +1,5 @@
-// require admin from Models folder
 const admin = require('../Models/admin/admin');
-// require errorLog from Utils folder
 const errorLog = require('../Utils/errorLog');
-// require bcrypt from bcryptjs
 const bcrypt = require('bcryptjs');
 
 const coldStart = async() => {

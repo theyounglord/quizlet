@@ -17,12 +17,11 @@ const adminSchema = new Schema({
         required: true
     },
     role: {
-        // enum of "U" for user, "A" for admin
         type: String,
         enum: ["U", "A"],
         default: "A"
     },
-    // array of ip_addresses
+    // array of ip_addresses so that in future we can notify admin if he/she is logged in from multiple devices
     ip_addresses: [{
         type: String
     }],
