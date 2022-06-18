@@ -48,4 +48,82 @@ const createRoom = async (req, res) => {
     }
 };
 
-module.exports = { createRoom };
+// Creating an api to get all the rooms on the basis of page number or limit
+const getAllRooms = async (req, res) => {
+    try {
+        // getting the page number or limit from the request
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 10;
+        // finding all the rooms in the database
+        const rooms = await Room.find({}).skip((page - 1) * limit).limit(limit);
+        // sending the response to the client
+        return res.status(200).send({
+            status: "success",
+            message: "Rooms fetched successfully",
+            data: rooms
+        });
+    }
+    catch (error) {
+        console.log(error);
+        errorLog(error, 'Room', 'L');
+        return res.status(500).send({
+            status: "failure",
+            message: "Internal Server Error",
+            error: error
+        });
+    }
+};
+
+// Creating an api to get the last created room based on page number or limit
+const getLatestRooms = async (req, res) => {
+    try {
+        // getting the page number or limit from the request
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 10;
+        // finding the last created room in the database
+        const rooms = await Room.find({}).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+        // sending the response to the client
+        return res.status(200).send({
+            status: "success",
+            message: "Rooms fetched successfully",
+            data: rooms
+        });
+    }
+    catch (error) {
+        console.log(error);
+        errorLog(error, 'Room', 'L');
+        return res.status(500).send({
+            status: "failure",
+            message: "Internal Server Error",
+            error: error
+        });
+    }
+};
+
+// Craeting an api to get the room based on the access code 
+const getRoom = async (req, res) => {
+    try {
+        // finding the room based on the access code
+        const {
+            access_code
+        } = req.body;
+        const room = await Room.findOne({ access_code: access_code });
+        // sending the response to the client
+        return res.status(200).send({
+            status: "success",
+            message: "Room fetched successfully",
+            data: room
+        });
+    }
+    catch (error) {
+        console.log(error);
+        errorLog(error, 'Room', 'L');
+        return res.status(500).send({
+            status: "failure",
+            message: "Internal Server Error",
+            error: error
+        });
+    }
+};
+
+module.exports = { createRoom, getAllRooms, getLatestRooms, getRoom };

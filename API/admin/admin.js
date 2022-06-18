@@ -1,7 +1,10 @@
 const router = require('express').Router();
 
 const {
-    createRoom
+    createRoom,
+    getAllRooms,
+    getLatestRooms,
+    getRoom
 } = require('../../Controllers/admin/admin');
 
 const {
@@ -32,6 +35,30 @@ router.post('/createRoom',
     activityLog,
     isAccessAllowed(['A']),
     createRoom
+);
+
+router.get('/getAllRooms',
+    isLogin,
+    callLog,
+    activityLog,
+    isAccessAllowed(['A']),
+    getAllRooms
+);
+
+router.get('/getLatestRooms',
+    isLogin,
+    callLog,
+    activityLog,
+    isAccessAllowed(['A']),
+    getLatestRooms
+);
+
+router.get('/getRoom',
+    isLogin,
+    callLog,
+    activityLog,
+    isAccessAllowed(['A']),
+    getRoom
 );
 
 module.exports = router;
