@@ -10,15 +10,14 @@ const roomSchema = new Schema({
     },
     // array of ip_addresses
     ip_addresses: [{
-        type: String,
-        required: true
+        type: String
     }],
     // array of users
     users: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
-    // array of admins
+    // array of admins for controlling the room (for advance features)
     admins: [{
         type: Schema.Types.ObjectId,
         ref: 'Admin'
@@ -39,6 +38,9 @@ const roomSchema = new Schema({
             required: true
         }
     }]
+}, 
+{
+    timestamps: true
 });
 
 module.exports = mongoose.model('Room', roomSchema);

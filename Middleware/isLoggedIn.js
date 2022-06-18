@@ -2,10 +2,12 @@ const User = require('../Models/user/user');
 const Admin = require('../Models/admin/admin');
 const jwt = require('jsonwebtoken');
 
-const isLogin = async (req, res) => {
+const isLogin = async (req, res,next) => {
     try {   
         if (req.headers["x-access-token"]) {
             const token = req.headers["x-access-token"];
+            console.log(process.env.JWT_SECRET)
+            console.log(token)
             const payload = jwt.verify(token, process.env.JWT_SECRET);
 
             if (payload && payload.user) {
