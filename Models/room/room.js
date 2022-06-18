@@ -22,10 +22,6 @@ const roomSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Admin'
     }],
-    number_of_questions: {
-        type: Number,
-        required: true
-    },
     // array of questions
     questions: [{
         type: Schema.Types.ObjectId,

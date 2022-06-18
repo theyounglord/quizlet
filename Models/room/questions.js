@@ -17,7 +17,7 @@ const questionSchema = new Schema({
         type: String,
         required: true
     },
-    room: {
+    room_id: {
         type: Schema.Types.ObjectId,
         ref: 'Room'
     }

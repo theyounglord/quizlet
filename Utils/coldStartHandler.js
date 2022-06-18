@@ -21,7 +21,6 @@ const coldStart = async() => {
                 data: newAdmin
             });
         }
-
     }
     catch (error) {
         console.log(error);
