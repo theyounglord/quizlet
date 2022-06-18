@@ -18,6 +18,6 @@ const errorLog = async(err,api,severity) => {
     catch(error){
         console.log(error);
     }
-}
+};
 
-module.exports = {errorLog}
+module.exports = { errorLog }
