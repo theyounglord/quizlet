@@ -4,6 +4,7 @@ const Admin = require('../../Models/admin/admin');
 const User = require('../../Models/user/user');
 // const Quiz = require('../../Models/quiz/quiz');
 const Question = require('../../Models/room/questions');
+const Option = require('../../Models/room/options');
 // const Answer = require('../../Models/room/answers');
 // require shortid to generate a random access code
 const shortid = require('shortid');
@@ -147,7 +148,7 @@ const createQuestions = async (req, res) => {
         // creating a new question
         const newQuestion = new Question({
             question: req.body.question,
-            options: req.body.options,
+            options_data: req.body.options,
             answer: req.body.answer
         });
         // creating a new question in the database
@@ -177,6 +178,47 @@ const createQuestions = async (req, res) => {
         });
     }
 };
+// create an api to create option for questionsid
+// Use Bulk insert to insertMany options in the database
+const createBulkOptions = async (req, res) => {
+    try {
+        const {
+            question_id
+        } = req.query;
+        const {
+            option_text,
+            is_correct
+        } = req.body;
+        // finding the question based on the question id
+        const question = await Question.findOne({ _id: question_id });
+        // creating a new option
+        const newOption = new Option({
+            option_text: option_text,
+            is_correct: is_correct,
+            question_id: question_id
+        });
+        // creating a new option in the database
+        const optionData = await Option.create(newOption);
+        // pushing the option id and option_ to the question's options array
+        const updatedQuestion = await Question.findOneAndUpdate({ _id: question_id }, { $push: { options_data: optionData._id }, }, { new: true });
+        // sending the response to the client
+        return res.status(200).send({
+            status: "success",
+            message: "Option created successfully",
+            data: [updatedQuestion, optionData]
+        });
+    }
+    catch (error) {
+        console.log(error);
+        errorLog(error, 'Room', 'L');
+        return res.status(500).send({
+            status: "failure",
+            message: "Internal Server Error",
+            error: error
+        });
+    }
+}
+
 
 // Create an api to edit the question based on the question id in query
 const editQuestions = async (req, res) => {
@@ -237,4 +279,4 @@ const getQuestions = async (req, res) => {
 };
 
 
-module.exports = { createRoom, getAllRooms, getLatestRooms, getRoom, createQuestions, editQuestions, getQuestions };
+module.exports = { createRoom, getAllRooms, getLatestRooms, getRoom, createQuestions, editQuestions, getQuestions, createBulkOptions };

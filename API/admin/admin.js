@@ -8,6 +8,7 @@ const {
     createQuestions,
     editQuestions,
     getQuestions,
+    createBulkOptions
 } = require('../../Controllers/admin/admin');
 
 const {
@@ -81,6 +82,14 @@ router.post('/createQuestions',
     // answer is a string
     body('answer').exists().notEmpty().isString().withMessage('Answer is required'),
     createQuestions
+);
+
+router.post('/createBulkOptions',
+    isLogin,
+    callLog,
+    activityLog,
+    isAccessAllowed(['A']),
+    createBulkOptions
 );
 
 router.patch('/editQuestions',

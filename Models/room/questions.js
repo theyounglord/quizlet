@@ -9,9 +9,14 @@ const questionSchema = new Schema({
         type: String,
         required: true
     },
-    options: [{
-        type: String,
-        required: true
+    options_data: [{
+        option_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Option'
+        },
+        option_text: {
+            type: String
+        }
     }],
     answer: {
         type: String,

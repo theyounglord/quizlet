@@ -1,5 +1,5 @@
 const admin = require('../Models/admin/admin');
-const errorLog = require('../Utils/errorLog');
+const { errorLog } = require('../Utils/errorLog');
 const bcrypt = require('bcryptjs');
 
 const coldStart = async() => {
