@@ -63,7 +63,5 @@ const joinRoom = async (req, res) => {
         });
     }
 };
- 
-
 
 module.exports = { joinRoom };
