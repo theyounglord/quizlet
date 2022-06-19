@@ -1,28 +1,30 @@
 // require admin from Models folder
 const admin = require('../Models/admin/admin');
 // require errorLog from Utils folder
-const errorLog = require('../Utils/errorLog');
+const {errorLog} = require('../Utils/errorLog');
 const requestIp = require('request-ip');
 
-// update ip_addresses in admin whose email is kumardeepam8600@gmail.com
-// check if same ip_addresses is present in database then leave it else add it in the array of ip_addresses
-const setIpAddresses = async(req) => {
+// create an api to get the ip address of the client using request-ip
+const getIpAddress = (req, res) => {
     try {
-        const adminData = await admin.findOne({ email: "kumardeepam8600@gmail.com" });
-        if(adminData){
-            const ip_addresses = requestIp.getClientIp(req);
-            if(adminData.ip_addresses.indexOf(ip_addresses) === -1){
-                adminData.ip_addresses.push(ip_addresses);
-                await adminData.save();
-            }
-            return;
-        }
-        return;
+        // getting the ip address of the client
+        const ip = requestIp.getClientIp(req);
+        // sending the response to the client
+        return res.status(200).send({
+            status: "success",
+            message: "Ip address fetched successfully",
+            data: ip
+        });
     }
     catch (error) {
         console.log(error);
-        return false;
+        errorLog(error, 'Room', 'L');
+        return res.status(500).send({
+            status: "failure",
+            message: "Internal Server Error",
+            error: error
+        });
     }
-}
+};
 
-module.exports = { setIpAddresses };
+module.exports = { getIpAddress };

@@ -22,10 +22,6 @@ const userSchema = new Schema({
         enum: ["U", "A"],
         default: "U"
     },
-    //ip_addresses
-    ip_addresses: {
-        type: String
-    },
     access_token: {
         type: String
     },

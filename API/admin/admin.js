@@ -23,6 +23,10 @@ const {
 } = require('../../Middleware/isLoggedIn');
 
 const {
+    getIpAddress
+} = require('../../Utils/ip_adress');
+
+const {
     isAccessAllowed
 } = require('../../Middleware/isAccessAllowed');
 
@@ -31,6 +35,8 @@ const {
     body,
     validationResult
 } = require('express-validator');
+
+router.get('/ipaddress', getIpAddress);
 
 router.post('/createRoom', 
     isLogin,
