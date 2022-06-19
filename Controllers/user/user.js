@@ -11,11 +11,7 @@ const shortid = require('shortid');
 const { errorLog } = require('../../Utils/errorLog');
 const { getIpAddress } = require('../../Utils/ip_adress');
 
-// create an api to join users in a room based on the access code
-// check if the user is already present in the database or not
-// if not present, then add the user to the database
-// elseif the same user is present, then do not add the user to users array in the room
-// push the user id in the array of users in the room
+//  Creating an api to create a new room based on the access code
 const joinRoom = async (req, res) => {
     try {
         const {
