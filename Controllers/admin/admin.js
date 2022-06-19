@@ -199,8 +199,8 @@ const createBulkOptions = async (req, res) => {
         });
         // creating a new option in the database
         const optionData = await Option.create(newOption);
-        // pushing the option id and option_ to the question's options array
-        const updatedQuestion = await Question.findOneAndUpdate({ _id: question_id }, { $push: { options_data: optionData._id }, }, { new: true });
+        // pushing the option id to the question's options array
+        const updatedQuestion = await Question.findOneAndUpdate({ _id: question_id }, { $push: { options_data: optionData._id } }, { new: true });
         // sending the response to the client
         return res.status(200).send({
             status: "success",
@@ -278,5 +278,65 @@ const getQuestions = async (req, res) => {
     }
 };
 
+// api to get the top 10 users based on the room id in query who have highest score
+const getTopTensUsers = async (req, res) => {
+    try {
+        // finding the room based on the room id
+        const {
+            room_id
+        } = req.query;
+        const room = await Room.findOne({ _id: room_id });
+        // finding the users based on the room's users array
+        const users = await User.find({ _id: { $in: room.users } });
+        // sorting the users based on the score
+        const sortedUsers = users.sort((a, b) => b.score - a.score);
+        // sending the response to the client
+        return res.status(200).send({
+            status: "success",
+            message: "Top 10 users fetched successfully",
+            data: sortedUsers.slice(0, 10)
+        });
+    }
+    catch (error) {
+        console.log(error);
+        errorLog(error, 'Room', 'L');
+        return res.status(500).send({
+            status: "failure",
+            message: "Internal Server Error",
+            error: error
+        });
+    }
+}
 
-module.exports = { createRoom, getAllRooms, getLatestRooms, getRoom, createQuestions, editQuestions, getQuestions, createBulkOptions };
+// api to get the user who has highest score based on the room id in query
+const getTopUser = async (req, res) => {
+    try {
+        // finding the room based on the room id
+        const {
+            room_id
+        } = req.query;
+        const room = await Room.findOne({ _id: room_id });
+        // finding the users based on the room's users array
+        const users = await User.find({ _id: { $in: room.users } });
+        // sorting the users based on the score
+        const sortedUsers = users.sort((a, b) => b.score - a.score);
+        // sending the response to the client
+        return res.status(200).send({
+            status: "success",
+            message: "Top user fetched successfully",
+            data: sortedUsers[0]
+        });
+    }
+    catch (error) {
+        console.log(error);
+        errorLog(error, 'Room', 'L');
+        return res.status(500).send({
+            status: "failure",
+            message: "Internal Server Error",
+            error: error
+        });
+    }
+}
+
+
+module.exports = { createRoom, getAllRooms, getLatestRooms, getRoom, createQuestions, editQuestions, getQuestions, createBulkOptions, getTopTensUsers, getTopUser };

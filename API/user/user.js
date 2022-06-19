@@ -26,7 +26,8 @@ const {
 
 const {
     joinRoom,
-    getQuestion
+    getQuestion,
+    answerQuestion
 } = require('../../Controllers/user/user');
 
 router.patch('/joinRoom',
@@ -43,6 +44,14 @@ router.get('/getQuestion',
     activityLog,
     isAccessAllowed(['U']),
     getQuestion
+);
+
+router.post('/answerQuestion',
+    isLogin,
+    callLog,
+    activityLog,
+    isAccessAllowed(['U']),
+    answerQuestion
 );
 
 module.exports = router;
