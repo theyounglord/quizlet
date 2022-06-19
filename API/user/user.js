@@ -25,7 +25,8 @@ const {
 // } = require('../../Middleware/alreadyInRoom');
 
 const {
-    joinRoom
+    joinRoom,
+    getQuestion
 } = require('../../Controllers/user/user');
 
 router.patch('/joinRoom',
@@ -34,6 +35,14 @@ router.patch('/joinRoom',
     activityLog,
     isAccessAllowed(['U']),
     joinRoom
+);
+
+router.get('/getQuestion',
+    isLogin,
+    callLog,
+    activityLog,
+    isAccessAllowed(['U']),
+    getQuestion
 );
 
 module.exports = router;

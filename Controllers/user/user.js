@@ -64,4 +64,33 @@ const joinRoom = async (req, res) => {
     }
 };
 
-module.exports = { joinRoom };
+// Creating an api to get particular question based on the question id(in query) of the room's access code
+const getQuestion = async (req, res) => {
+    try {
+        // finding the room based on the access code
+        const {
+            access_code,
+            question_id,
+        } = req.query;
+        const room = await Room.findOne({ access_code: access_code });
+        // finding the question based on the question id
+        const question = await Question.findOne({ _id: question_id });
+        // sending the response to the client
+        return res.status(200).send({
+            status: "success",
+            message: "Question fetched successfully",
+            data: question
+        });
+    }
+    catch (error) {
+        console.log(error);
+        errorLog(error, 'Room', 'L');
+        return res.status(500).send({
+            status: "failure",
+            message: "Internal Server Error",
+            error: error
+        });
+    }
+};
+        
+module.exports = { joinRoom, getQuestion };
