@@ -8,6 +8,25 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const bodyParser = require('body-parser');
+const rateLimit = require("express-rate-limit");
+
+app.use(
+    rateLimit({
+      windowMs: 12 * 60 * 60 * 1000, // 12 hour duration in milliseconds
+      max: 5,
+      message: "You exceeded 100 requests in 12 hour limit!",
+      headers: true,
+        handler: function (req, res) {
+            res.status(429).send({
+                status: "failure",
+                message: "You exceeded 100 requests in 12 hour limit!"
+            });
+        }
+    }
+    )
+    );
+//
+
 
 
 app.use(
