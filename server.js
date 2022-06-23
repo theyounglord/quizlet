@@ -22,9 +22,8 @@ app.use(
                 message: "You exceeded 100 requests in 12 hour limit!"
             });
         }
-    }
-    )
-    );
+    })
+);
 //
 
 
